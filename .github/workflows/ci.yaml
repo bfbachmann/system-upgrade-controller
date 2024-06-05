@@ -85,8 +85,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    env:
-      ARCH: ${{ matrix.arch }}
     strategy:
       matrix:
         os: [linux]
@@ -104,6 +102,10 @@ jobs:
 
       - name: Fix the not-a-git-repository issue
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Set environment variables
+        run: |
+          "ARCH=${{ matrix.arch }}" | Out-File -FilePath $env:GITHUB_ENV -Append
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
