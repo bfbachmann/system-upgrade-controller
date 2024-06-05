@@ -48,6 +48,8 @@ jobs:
 
   create-gh-release:
     runs-on: ubuntu-latest
+    needs: 
+      - run-tests
     permissions:
       contents: write # needed for creating the GH release
     env:
@@ -55,7 +57,7 @@ jobs:
     strategy:
       matrix:
         os: [linux]
-        arch: [amd64, arm64]
+        arch: [amd64]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
