@@ -36,7 +36,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Set environment variables
-        run: echo "ARCH=${{ matrix.arch }}" >> $GITHUB_ENV
+        run: echo "DAPPER_HOST_ARCH=${{ matrix.arch }}" >> $GITHUB_ENV
 
       - name: Run tests
         id: build-test
@@ -46,7 +46,9 @@ jobs:
           dapper e2e-verify
       
       - name: Debug
-        run: ls -lah dist/artifacts
+        run: |
+          ls -lah dist/artifacts
+          echo "$DAPPER_HOST_ARCH"
 
       - name: Generate artifact checksums
         run: find dist/artifacts -type f -exec sha256sum {} \; > "dist/artifacts/sha256sum-${{ matrix.arch }}.txt"
