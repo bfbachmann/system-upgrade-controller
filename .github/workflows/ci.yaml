@@ -44,6 +44,9 @@ jobs:
           dapper ci
           dapper e2e-sonobuoy
           dapper e2e-verify
+      
+      - name: Debug
+        run: ls -lah dist/artifacts
 
       - name: Generate artifact checksums
         run: find dist/artifacts -type f -exec sha256sum {} \; > "dist/artifacts/sha256sum-${{ matrix.arch }}.txt"
