@@ -50,11 +50,6 @@ jobs:
           dapper e2e-sonobuoy
           dapper e2e-verify
 
-      - name: Debug
-        run: |
-          ls -lah dist/artifacts
-          echo "$DAPPER_HOST_ARCH"
-
       - name: Generate artifact checksums
         run: find dist/artifacts -type f -exec sha256sum {} \; > "dist/artifacts/sha256sum-${{ matrix.arch }}.txt"
 
@@ -76,12 +71,6 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Fix the not-a-git-repository issue
-        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
-
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
@@ -141,7 +130,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          path: dist/artifacts
+          path: ./dist/artifacts
           pattern: artifacts-*
           merge-multiple: true
 
