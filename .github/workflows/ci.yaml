@@ -59,10 +59,6 @@ jobs:
       contents: write # needed for creating the GH release
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    strategy:
-      matrix:
-        os: [linux]
-        arch: [amd64]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -122,6 +118,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
+          path: dist/artifacts
           merge-multiple: true
 
       - name: Build and push controller image to DockerHub
