@@ -70,6 +70,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: dist/artifacts
+          pattern: artifacts-*
           merge-multiple: true
 
       - name: Create GitHub release
@@ -119,6 +120,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: dist/artifacts
+          pattern: artifacts-*
           merge-multiple: true
 
       - name: Build and push controller image to DockerHub
