@@ -85,6 +85,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      ARCH: ${{ matrix.arch }}
     strategy:
       matrix:
         os: [linux]
