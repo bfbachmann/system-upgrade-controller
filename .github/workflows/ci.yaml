@@ -32,6 +32,9 @@ jobs:
       - name: Fix the not-a-git-repository issue
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -120,6 +123,9 @@ jobs:
         run: |
           echo "ARCH=${{ matrix.arch }}" >> $GITHUB_ENV
           echo "TAG=${{ env.TAG }}-${{ matrix.arch }}" >> $GITHUB_ENV
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
