@@ -1,21 +1,19 @@
 name: CI on Push Tag
 
-on: [push]
-  # push:
-    # tags:
-    #   - '*'
+on:
+  push:
+    tags:
+      - '*'
 
 env:
   IMAGE: rancher/system-upgrade-controller
 
 jobs:
-  test:
+  run-tests:
     runs-on: ubuntu-latest
     container: rancher/dapper:v0.6.0
     permissions:
       contents: read
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       matrix:
         os: [linux]
@@ -27,17 +25,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.IMAGE }}
-          flavor: |
-            latest=false
-
       - name: Fix the not-a-git-repository issue
-        run: |
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -49,5 +38,82 @@ jobs:
           dapper e2e-sonobuoy
           dapper e2e-verify
 
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: "artifacts-${{ matrix.os }}-${{ matrix.arch }}"
+          path: /dist/artifacts/*
+          if-no-files-found: error
+          overwrite: true
+
+  create-gh-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # needed for creating the GH release
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    strategy:
+      matrix:
+        os: [linux]
+        arch: [amd64, arm64]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Fix the not-a-git-repository issue
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: /dist/artifacts
+          pattern: artifacts-*
+          merge-multiple: true
+
       - name: Create GitHub release
         run: gh release create "${{ github.event.client_payload.tag }}" --prerelease --title "${{ github.event.client_payload.tag }}" /dist/artifacts/*
+
+  build-push-images:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      matrix:
+        os: [linux]
+        arch: [amd64, arm64]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE }}
+          flavor: latest=false
+
+      - name: Fix the not-a-git-repository issue
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Set environment variables
+        run: |
+          echo "ARCH=${{ matrix.arch }}" >> "$GITHUB_ENV"
+          echo "OS=${{ matrix.os }}"     >> "$GITHUB_ENV"
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Publish controller to DockerHub
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: package/Dockerfile
+          push: true
+          tags: "${{ github.event.client_payload.tag }}-${{ matrix.arch }}"
+          platforms: "${{ env.OS }}/${{ env.ARCH }}"
