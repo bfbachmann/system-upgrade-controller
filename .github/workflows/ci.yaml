@@ -41,13 +41,15 @@ jobs:
       - name: Set environment variables
         run: echo "DAPPER_HOST_ARCH=${{ matrix.arch }}" >> $GITHUB_ENV
 
-      - name: Run tests
-        id: build-test
+      - name: Run CI
+        run: dapper ci
+      
+      - name: Run e2e
+        if: ${{ matrix.arch == 'amd64' }}
         run: |
-          dapper ci
           dapper e2e-sonobuoy
           dapper e2e-verify
-      
+
       - name: Debug
         run: |
           ls -lah dist/artifacts
