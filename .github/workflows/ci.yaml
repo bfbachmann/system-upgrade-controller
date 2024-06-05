@@ -104,8 +104,7 @@ jobs:
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
       - name: Set environment variables
-        run: |
-          "ARCH=${{ matrix.arch }}" | Out-File -FilePath $env:GITHUB_ENV -Append
+        run:  echo "ARCH=${{ matrix.arch }}" >> $GITHUB_ENV
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
