@@ -1,9 +1,6 @@
-name: CI on Push Tag
+name: CI
 
-on:
-  push:
-    tags:
-      - '*'
+on: [repository_dispatch]
 
 env:
   IMAGE: rancher/system-upgrade-controller
