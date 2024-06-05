@@ -1,9 +1,10 @@
 name: CI
 
-on: [repository_dispatch]
+on: [workflow_dispatch]
 
 env:
   IMAGE: rancher/system-upgrade-controller
+  TAGS: ${{ inputs.tags }}
 
 jobs:
   run-tests:
@@ -70,7 +71,7 @@ jobs:
           merge-multiple: true
 
       - name: Create GitHub release
-        run: gh release create "${{ github.event.client_payload.tag }}" --prerelease --title "${{ github.event.client_payload.tag }}" /dist/artifacts/*
+        run: gh release create "${{ env.TAGS }}" --prerelease --title "${{ env.TAGS }}" /dist/artifacts/*
 
   build-push-images:
     runs-on: ubuntu-latest
@@ -114,5 +115,5 @@ jobs:
           context: .
           file: package/Dockerfile
           push: true
-          tags: "${{ github.event.client_payload.tag }}-${{ matrix.arch }}"
+          tags: "${{ env.TAGS }}-${{ matrix.arch }}"
           platforms: "${{ env.OS }}/${{ env.ARCH }}"
