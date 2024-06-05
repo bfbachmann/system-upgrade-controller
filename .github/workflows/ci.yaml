@@ -45,16 +45,11 @@ jobs:
       - name: Generate artifact checksums
         run: find dist/artifacts -type f -exec sha256sum {} \; > "dist/artifacts/sha256sum-${{ matrix.arch }}.txt"
 
-      - name: Copy artifacts
-        run: |
-          mkdir -p /tmp/artifacts
-          cp -r dist/artifacts /tmp/artifacts/
-
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: "artifacts-${{ matrix.os }}-${{ matrix.arch }}"
-          path: /tmp/artifacts/*
+          path: dist/artifacts/*
           if-no-files-found: error
           overwrite: true
 
