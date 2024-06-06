@@ -62,7 +62,7 @@ jobs:
           merge-multiple: true
 
       - name: Debug
-        run: ls -lah dist/artifacts
+        run: ls -lah "$GITHUB_WORKSPACE/dist/artifacts"
 
       - name: Build
         uses: docker/build-push-action@v5
