@@ -10,7 +10,7 @@ on:
       - '*'
 
 env:
-  IMAGE: rancher/system-upgrade-controller
+  IMAGE: brunobachmann499/system-upgrade-controller
   TAG: ${{ github.ref_name }}
 
 jobs:
@@ -170,7 +170,7 @@ jobs:
           if-no-files-found: error
           overwrite: true
 
-  # Creates a manifest for the images build in the `build-push-images` job
+  # Creates a manifest for the images built in the `build-push-images` job
   # and pushes it to DockerHub.
   merge:
     runs-on: ubuntu-latest
