@@ -60,7 +60,9 @@ jobs:
           echo "$GITHUB_WORKSPACE"
           pwd
           realpath dist/artifacts
-          ls -lah "$(realpath dist/artifacts)"
+          echo "one" > dist/artifacts/one.txt
+          ls -lah dist/artifacts
+          echo "two" > /tmp/two.txt
 
       - name: Fix the not-a-git-repository issue
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
