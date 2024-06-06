@@ -71,7 +71,7 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v5
         with:
-          context: "$GITHUB_WORKSPACE"
+          context: .
           file: Dockerfile.test
           push: false
           tags: "${{ steps.meta.outputs.tags }}"

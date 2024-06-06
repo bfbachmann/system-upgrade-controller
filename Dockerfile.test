@@ -1,2 +1,2 @@
 FROM scratch AS controller
-COPY dist/artifacts/test /tmp/test
+COPY ./dist/artifacts/test /tmp/test
