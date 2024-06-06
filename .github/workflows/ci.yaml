@@ -112,6 +112,12 @@ jobs:
         with:
           images: ${{ env.IMAGE }}
           flavor: latest=false
+          tags: |
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=tag
+            type=ref,event=pr
+            type=raw,value={{ tag }}-${{ matrix.arch }}
 
       - name: Fix the not-a-git-repository issue
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
@@ -192,6 +198,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.IMAGE }}
+          flavor: latest=false
 
       # - name: Load Secrets from Vault
       #   uses: rancher-eio/read-vault-secrets@main
