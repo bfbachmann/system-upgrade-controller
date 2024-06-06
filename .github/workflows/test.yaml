@@ -57,6 +57,7 @@ jobs:
 
       - name: Debug
         run: |
+          echo "$GITHUB_WORKSPACE"
           pwd
           realpath dist/artifacts
           ls -lah "$(realpath dist/artifacts)"
@@ -70,7 +71,7 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: "$GITHUB_WORKSPACE"
           file: Dockerfile.test
           push: false
           tags: "${{ steps.meta.outputs.tags }}"
