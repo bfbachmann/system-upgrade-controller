@@ -9,7 +9,7 @@ on:
       - '*'
 
 env:
-  IMAGE: bfbachmann/system-upgrade-controller
+  IMAGE: brunobachmann499/system-upgrade-controller
   TAG: ${{ github.ref_name }}
 
 jobs:
