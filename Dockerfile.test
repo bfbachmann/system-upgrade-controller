@@ -1,4 +1,4 @@
 FROM scratch AS controller
 COPY two.txt /tmp/two.txt
-COPY dist/artifacts/one.txt /tmp/one
-COPY dist/artifacts/test.txt /tmp/test
+COPY dist/artifacts/one.txt /tmp/one.txt
+COPY dist/artifacts/test.txt /tmp/test.txt

@@ -18,7 +18,7 @@ jobs:
       - name: Generate dummy artifacts
         run: |
           mkdir -p dist/artifacts
-          echo "test" > dist/artifacts/dummy.txt
+          echo "test" > dist/artifacts/test.txt
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
