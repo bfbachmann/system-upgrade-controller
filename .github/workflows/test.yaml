@@ -67,7 +67,7 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v5
         with:
-          context: dist
+          context: "{{defaultContext}}:dist"
           file: Dockerfile.test
           push: false
           tags: "${{ steps.meta.outputs.tags }}"
