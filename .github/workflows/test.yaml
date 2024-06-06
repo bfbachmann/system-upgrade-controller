@@ -57,6 +57,7 @@ jobs:
 
       - name: Debug
         run: |
+          pwd
           realpath dist/artifacts
           ls -lah "$(realpath dist/artifacts)"
 
