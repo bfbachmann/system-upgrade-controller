@@ -3,6 +3,8 @@ name: CI
 # The jobs below will execute any time a tag is pushed to any branch in the repo.
 on: 
   push:
+    branches:
+      - 'master'
     tags:
       - '*'
 
@@ -150,7 +152,6 @@ jobs:
           target: controller
           build-args: |
             ARCH=${{ matrix.arch }}
-            TAG=${{ env.TAG }}
           push: true
           tags: "${{ steps.meta.outputs.tags }}"
           platforms: "${{ matrix.os }}/${{ matrix.arch }}"
