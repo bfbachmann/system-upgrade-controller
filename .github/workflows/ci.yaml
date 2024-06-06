@@ -9,7 +9,7 @@ on:
       - '*'
 
 env:
-  IMAGE: rancher/system-upgrade-controller
+  IMAGE: bfbachmann/system-upgrade-controller
   TAG: ${{ github.ref_name }}
 
 jobs:
@@ -114,11 +114,6 @@ jobs:
 
       - name: Fix the not-a-git-repository issue
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
-
-      - name: Set environment variables
-        run: |
-          echo "ARCH=${{ matrix.arch }}" >> $GITHUB_ENV
-          echo "TAG=${{ env.TAG }}-${{ matrix.arch }}" >> $GITHUB_ENV
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
