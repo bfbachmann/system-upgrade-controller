@@ -135,14 +135,14 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          path: /tmp/artifacts
+          path: dist/artifacts
           pattern: artifacts-*
           merge-multiple: true
 
       - name: Debug
         run: |
-          ls -lah /tmp/artifacts
-          cp -r /tmp/artifacts ./dist/artifacts
+          ls -lah dist/artifacts
+          echo "$ARCH"
 
       - name: Build and push controller image to DockerHub
         uses: docker/build-push-action@v5
