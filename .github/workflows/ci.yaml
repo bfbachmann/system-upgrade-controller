@@ -148,9 +148,9 @@ jobs:
           context: .
           file: package/Dockerfile
           target: controller
-          build-args:
-            - ARCH=${{ matrix.arch }}
-            - TAG=${{ env.TAG }}
+          build-args: |
+            ARCH=${{ matrix.arch }}
+            TAG=${{ env.TAG }}
           push: true
           tags: "${{ steps.meta.outputs.tags }}"
           platforms: "${{ matrix.os }}/${{ matrix.arch }}"
@@ -162,9 +162,9 @@ jobs:
           context: .
           file: package/Dockerfile
           target: e2e-tests
-          build-args:
-            - ARCH=${{ matrix.arch }}
-            - TAG=${{ env.TAG }}
+          build-args: |
+            ARCH=${{ matrix.arch }}
+            TAG=${{ env.TAG }}
           push: true
           tags: "${{ steps.meta.outputs.tags }}"
           platforms: "${{ matrix.os }}/${{ matrix.arch }}"
