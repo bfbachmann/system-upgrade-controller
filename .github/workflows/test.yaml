@@ -58,11 +58,13 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          path: "$GITHUB_WORKSPACE/dist/artifacts"
+          path: dist/artifacts
           merge-multiple: true
 
       - name: Debug
-        run: ls -lah "$GITHUB_WORKSPACE/dist/artifacts"
+        run: |
+          realpath dist/artifacts
+          ls -lah "$(realpath dist/artifacts)"
 
       - name: Build
         uses: docker/build-push-action@v5
