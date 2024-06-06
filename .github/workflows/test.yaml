@@ -58,7 +58,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          path: dist/artifacts
+          path: "$GITHUB_WORKSPACE/dist/artifacts"
           merge-multiple: true
 
       - name: Debug
@@ -67,7 +67,7 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v5
         with:
-          context: "{{defaultContext}}:dist"
+          context: .
           file: Dockerfile.test
           push: false
           tags: "${{ steps.meta.outputs.tags }}"
